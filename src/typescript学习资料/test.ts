@@ -10,11 +10,12 @@ const list4: [{ name: string; age: number }] = [{ name: 'tom', age: 18 }]
 const list5: Array<{ name: string; age: number }> = [{ name: 'tom', age: 18 }]
 
 interface User {
+  id: number
   name: string
   age: number
 }
 
-const list6: Array<User> = [{ name: 'tom', age: 18 }]
+const list6: Array<User> = [{ id: 1, name: 'tom', age: 18 }]
 
 // 函数类型
 function add1(a: number, b: number): number {

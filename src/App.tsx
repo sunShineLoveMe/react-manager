@@ -1,48 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [name, setName] = useState('河畔一角')
-  const [user, setUser] = useState({ name: '河畔一角', age: 18 })
-  const [list, setList] = useState(['tom', 'jack'])
-  const handleUpdate = () => {
-    setName('React')
-  }
+  const [count, setCount] = useState(0)
 
-  const handleUser = () => {
-    // setName('React')
-    //解构赋值
-    setUser({ ...user, age: 20 })
+  const total1 = () => {
+    console.log('total1...')
+    const list = [1, 3, 5, 7, 9]
+    return list.reduce((total, item) => total + item, 0)
   }
+  const total2 = useMemo(() => {
+    console.log('total2...')
+    const list = [1, 3, 5, 7, 9]
+    return list.reduce((total, item) => total + item, 0)
+  }, [])
 
-  const handleList = () => {
-    setList([...list, 'lucy'])
+  const handleClick = () => {
+    setCount(count + 1)
   }
-
   return (
     <div className='App'>
-      <p>欢迎学习react的通用后台课程</p>
-      <p>{name}</p>
-
+      <p>欢迎学习React后台课程</p>
       <p>
-        <span>用户名称: {user.name}</span>
-        <span style={{ marginLeft: 10, color: 'green', fontSize: 24 }}>用户年龄: {user.age}</span>
+        <span>Count值: {count}</span>
+        <button onClick={handleClick}>按钮</button>
       </p>
-
-      <p>
-        {list.map(item => {
-          return (
-            <span key={item} style={{ marginRight: 10, color: 'red' }}>
-              {item}
-            </span>
-          )
-        })}
-      </p>
-      <p>
-        <button onClick={handleUpdate}>修改名称</button>
-        <button onClick={handleUser}>修改用户</button>
-        <button onClick={handleList}>修改数组</button>
-      </p>
+      <p>{total1()}</p>
+      <p>{total2}</p>
     </div>
   )
 }

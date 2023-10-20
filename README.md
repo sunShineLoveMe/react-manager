@@ -1,28 +1,20 @@
-# React + TypeScript + Vite
+## React 通用后台模版框架
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 1. React Hook
 
-Currently, two official plugins are available:
+#### 1.1 特性
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Hook 是React16.8新增特性
+2. Hook 在不用class 组建的情况下使用react特性
+3. 解决class组件过于复杂的问题
+4. 提供了一系列hook API
+   1. useState 定义变量状态
+   2. useEffect 生命周期函数
+   3. useMemo useCallback
+   4. useContext useReducer
+   5. useRef
 
-## Expanding the ESLint configuration
+#### 1.2 用法讲解
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-# react-manager
+1. useEffect Hook相当于componentDidMount, componentDidUpdate和componentWillUnMount这三个函数的组合
+2.

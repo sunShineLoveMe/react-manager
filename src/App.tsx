@@ -1,37 +1,50 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [name, setName] = useState('河畔一角')
+  const [user, setUser] = useState({ name: '河畔一角', age: 18 })
+  const [list, setList] = useState(['tom', 'jack'])
+  const handleUpdate = () => {
+    setName('React')
+  }
+
+  const handleUser = () => {
+    // setName('React')
+    //解构赋值
+    setUser({ ...user, age: 20 })
+  }
+
+  const handleList = () => {
+    setList([...list, 'lucy'])
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    <div className='App'>
+      <p>欢迎学习react的通用后台课程</p>
+      <p>{name}</p>
+
+      <p>
+        <span>用户名称: {user.name}</span>
+        <span style={{ marginLeft: 10, color: 'green', fontSize: 24 }}>用户年龄: {user.age}</span>
       </p>
-    </>
+
+      <p>
+        {list.map(item => {
+          return (
+            <span key={item} style={{ marginRight: 10, color: 'red' }}>
+              {item}
+            </span>
+          )
+        })}
+      </p>
+      <p>
+        <button onClick={handleUpdate}>修改名称</button>
+        <button onClick={handleUser}>修改用户</button>
+        <button onClick={handleList}>修改数组</button>
+      </p>
+    </div>
   )
 }
 
 export default App
-
-

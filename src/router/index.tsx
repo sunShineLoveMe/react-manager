@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Login from '@/views/Login'
 import Welcome from '@/views/Welcome'
 import Error403 from '@/views/403'
-import Error404 from '@/views/404'
+import NotFound from '@/views/404'
 
 const router = [
   {
@@ -19,7 +19,7 @@ const router = [
   },
   {
     path: '/404',
-    element: <Error404 />,
+    element: <NotFound />,
   },
   {
     path: '/403',

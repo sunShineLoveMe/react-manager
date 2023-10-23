@@ -4,11 +4,11 @@ import request from '@/utils/request'
 export default function Login() {
   useEffect(() => {
     request
-      .get('/users/login', {
+      .post<string>('/users/login', {
         id: 123456,
       })
-      .catch(err => {
-        console.log(err)
+      .then(res => {
+        const token = res
       })
   }, [])
   return <div>Login</div>

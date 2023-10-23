@@ -1,7 +1,15 @@
+import { useEffect } from 'react'
+import request from '@/utils/request'
+
 export default function Login() {
-  return (
-    <div>
-      <span>Login</span>
-    </div>
-  )
+  useEffect(() => {
+    request
+      .get('/users', {
+        id: 123456,
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
+  return <div>Login</div>
 }

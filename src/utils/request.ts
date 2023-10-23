@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { message } from 'antd'
+import { hideLoading, showLoading } from './loading'
+import { error } from 'console'
 
 // 创建实例
 const instance = axios.create({
@@ -12,6 +14,7 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
+    showLoading()
     const token = localStorage.getItem('token')
     if (token) {
       config.headers.Authorization = 'Token::' + token
@@ -26,16 +29,26 @@ instance.interceptors.request.use(
 )
 
 // 响应拦截器
-instance.interceptors.response.use(response => {
-  const data = response.data
-  if (data.code === 50001) {
-    message.error(data.msg)
-  } else if (data.code != 0) {
-    message.error(data.msg)
-    return Promise.reject(data)
-  }
-  return data.data
-})
+instance.interceptors.response.use(
+  response => {
+    const data = response.data
+    hideLoading()
+    if (data.code === 50001) {
+      message.error(data.msg)
+      localStorage.removeItem('token')
+      location.href = '/login'
+    } else if (data.code != 0) {
+      message.error(data.msg)
+      return Promise.reject(data)
+    }
+    return data.data
+  },
+  error => {
+    hideLoading()
+    message.error(error.message)
+    return Promise.reject(error.message)
+  },
+)
 
 export default {
   get(url: string, params: any) {

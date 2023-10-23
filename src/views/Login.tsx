@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export default function Login() {
   useEffect(() => {
     request
-      .get('/users', {
+      .get('/users/login', {
         id: 123456,
       })
       .catch(err => {

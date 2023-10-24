@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 import { Button } from 'antd'
-import { formatMoney } from '@/utils'
+import { formatMoney, toLocalDate } from '@/utils'
 
 export default function Loign() {
   const handleClick = () => {
     console.log(formatMoney(323423.234234))
+    console.log(toLocalDate(new Date(), 'yyyy-MM-dd'))
     request.get('/users/login', {})
   }
 

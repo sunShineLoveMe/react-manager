@@ -1,9 +1,16 @@
 import styles from './index.module.less'
-import { Button, Form, Input, Checkbox } from 'antd'
+import { Button, Form, Input, Checkbox, message } from 'antd'
+import api from '@/api'
+import { Login } from '@/types/api'
+import storage from '@/utils/storage'
 
-export default function Login() {
-  const onFinish = () => {
-    console.log('完成')
+export default function LoginFC() {
+  const onFinish = async (values: Login.params) => {
+    const data = await api.login(values)
+    storage.set('token', data)
+    message.success('登陆成功')
+    const params = new URLSearchParams(location.search)
+    location.href = params.get('callback') || '/welcome'
   }
 
   return (
@@ -11,11 +18,11 @@ export default function Login() {
       <div className={styles.loginWrapper}>
         <div className={styles.title}>系统登陆</div>
         <Form name='basic' initialValues={{ remember: true }} onFinish={onFinish} autoComplete='off'>
-          <Form.Item name='username' rules={[{ required: true, message: 'Please input your username!' }]}>
+          <Form.Item name='userName' rules={[{ required: true, message: 'Please input your username!' }]}>
             <Input />
           </Form.Item>
 
-          <Form.Item name='password' rules={[{ required: true, message: 'Please input your password!' }]}>
+          <Form.Item name='userPwd' rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password />
           </Form.Item>
 

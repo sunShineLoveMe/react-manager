@@ -17,4 +17,9 @@
 #### 1.2 用法讲解
 
 1. useEffect Hook相当于componentDidMount, componentDidUpdate和componentWillUnMount这三个函数的组合
-2.
+
+### 常见问题解答
+
+#### 1. css module的作用
+
+css module是为了解决全局样式重复的问题，比如在某一个组件中的样式只适应于特定组件，但是可能会影响全局样式，这个时候css module就起到作用了

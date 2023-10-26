@@ -1,8 +1,9 @@
 import React from 'react'
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
-import { Layout, Menu, theme, Watermark } from 'antd'
+import { Layout, theme, Watermark } from 'antd'
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
+import Menu from '@/components/Menu'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -24,7 +25,7 @@ const App: React.FC = () => {
             console.log(collapsed, type)
           }}
         >
-          <div className='demo-logo-vertical' />
+          <Menu />
         </Sider>
         <Layout>
           <Header style={{ padding: 0, background: colorBgContainer }}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout, Menu, theme, Watermark } from 'antd'
+import NavHeader from '@/components/NavHeader'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -25,7 +26,9 @@ const App: React.FC = () => {
           <div className='demo-logo-vertical' />
         </Sider>
         <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>顶部区域</Header>
+          <Header style={{ padding: 0, background: colorBgContainer }}>
+            <NavHeader />
+          </Header>
           <Content style={{ margin: '24px 16px 0' }}>
             <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>content</div>
           </Content>

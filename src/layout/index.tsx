@@ -2,6 +2,7 @@ import React from 'react'
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons'
 import { Layout, Menu, theme, Watermark } from 'antd'
 import NavHeader from '@/components/NavHeader'
+import NavFooter from '@/components/NavFooter'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -32,7 +33,7 @@ const App: React.FC = () => {
           <Content style={{ margin: '24px 16px 0' }}>
             <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>content</div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+          <NavFooter />
         </Layout>
       </Layout>
     </Watermark>

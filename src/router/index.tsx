@@ -3,15 +3,25 @@ import Login from '@/views/login/Login'
 import Welcome from '@/views/Welcome'
 import Error403 from '@/views/403'
 import NotFound from '@/views/404'
+import Layout from '@/layout'
 
 const router = [
   {
     path: '/',
-    element: <Welcome />,
+    element: <Navigate to='/welcome' />,
   },
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: '/welcome',
+        element: <Welcome />,
+      },
+    ],
   },
   {
     path: '*',

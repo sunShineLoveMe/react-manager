@@ -11,6 +11,9 @@ const instance = axios.create({
   timeout: 8000,
   timeoutErrorMessage: '请求超时，请稍后再试',
   withCredentials: true,
+  headers: {
+    icode: '1E53900BEB862EDD',
+  },
 })
 
 // 请求拦截器
@@ -21,7 +24,6 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = 'Token::' + token
     }
-    config.headers.icode = '1E53900BEB862EDD'
     if (env.mock) {
       config.baseURL = env.mockApi // mock数据
     } else {

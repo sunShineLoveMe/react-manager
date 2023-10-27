@@ -1,4 +1,4 @@
-import { MenuFoldOutlined } from '@ant-design/icons'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Breadcrumb, Switch, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import styles from './index.module.less'
@@ -6,7 +6,7 @@ import storage from '@/utils/storage'
 import { useStore } from '@/store'
 
 const NavHeader = () => {
-  const userInfo = useStore(state => state.userInfo)
+  const { userInfo, collapsed, updateCollapsed } = useStore()
   const breadList = [
     {
       title: '首页',
@@ -34,10 +34,15 @@ const NavHeader = () => {
     }
   }
 
+  // 控制菜单的展开和收起
+  const toggleCollapsed = () => {
+    updateCollapsed()
+  }
+
   return (
     <div className={styles.navHeader}>
       <div className={styles.left}>
-        <MenuFoldOutlined />
+        <div onClick={toggleCollapsed}>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</div>
         <Breadcrumb items={breadList} style={{ marginLeft: 10 }} />
       </div>
       <div className='right'>

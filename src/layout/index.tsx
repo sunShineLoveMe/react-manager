@@ -11,7 +11,7 @@ import { useStore } from '@/store'
 const { Content, Sider } = Layout
 
 const App: React.FC = () => {
-  const updateUserInfo = useStore(state => state.updateUserInfo)
+  const { updateUserInfo, collapsed } = useStore()
   useEffect(() => {
     getUserInfo()
   }, [])
@@ -23,7 +23,7 @@ const App: React.FC = () => {
   return (
     <Watermark content='栉云版权'>
       <Layout>
-        <Sider>
+        <Sider collapsed={collapsed}>
           <Menu />
         </Sider>
         <Layout>

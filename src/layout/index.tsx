@@ -6,12 +6,12 @@ import Menu from '@/components/Menu'
 import { Outlet } from 'react-router-dom'
 import styles from './index.module.less'
 import api from '@/api'
-import { useBearStore } from '@/store'
+import { useStore } from '@/store'
 
 const { Content, Sider } = Layout
 
 const App: React.FC = () => {
-  const updateUserInfo = useBearStore(state => state.updateUserInfo)
+  const updateUserInfo = useStore(state => state.updateUserInfo)
   useEffect(() => {
     getUserInfo()
   }, [])

@@ -1,20 +1,21 @@
 import styles from './index.module.less'
-import { Button, Form, Input, Checkbox, message } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import api from '@/api'
 import { Login } from '@/types/api'
 import storage from '@/utils/storage'
 import { useState } from 'react'
-import store from '@/store'
+import { useStore } from '@/store'
 
 export default function LoginFC() {
   const [loading, setLoading] = useState(false)
+  const updateToken = useStore(state => state.updateToken)
   const onFinish = async (values: Login.params) => {
     try {
       setLoading(true)
       const data = await api.login(values)
       setLoading(false)
       storage.set('token', data)
-      store.token = data
+      updateToken(data)
       message.success('登陆成功')
       const params = new URLSearchParams(location.search)
       location.href = params.get('callback') || '/welcome'

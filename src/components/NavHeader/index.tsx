@@ -2,12 +2,11 @@ import { MenuFoldOutlined } from '@ant-design/icons'
 import { Breadcrumb, Switch, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import styles from './index.module.less'
-import store from '@/store'
 import storage from '@/utils/storage'
-import { useBearStore } from '@/store'
+import { useStore } from '@/store'
 
 const NavHeader = () => {
-  const userInfo = useBearStore(state => state.userInfo)
+  const userInfo = useStore(state => state.userInfo)
   const breadList = [
     {
       title: '首页',

@@ -1,26 +1,14 @@
-import resso from 'resso'
 import { User } from '@/types/api'
 import { create } from 'zustand'
-import { userInfo } from 'os'
 
-const store = resso({
-  token: '',
-  userInfo: {
-    userEmail: '',
-    userName: '',
-  },
-  updateUserInfo(userInfo: User.UserItem) {
-    store.userInfo = userInfo
-  },
-})
-
-export const useBearStore = create<{
+export const useStore = create<{
   token: string
   userInfo: {
     userEmail: string
     userName: string
   }
   updateUserInfo: (userInfo: User.UserItem) => void
+  updateToken: (token: string) => void
 }>(set => ({
   token: '',
   userInfo: {
@@ -28,6 +16,7 @@ export const useBearStore = create<{
     userName: '',
   },
   updateUserInfo: (userInfo: User.UserItem) => set({ userInfo }),
+  updateToken: (token: string) => set({ token }),
 }))
 
 // export const useBearStore = create<{
@@ -39,4 +28,4 @@ export const useBearStore = create<{
 //   removeAllBears: () => set({ bears: 0 }),
 // }))
 
-export default store
+// export default store

@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Layout, theme, Watermark } from 'antd'
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import Menu from '@/components/Menu'
 import { Outlet } from 'react-router-dom'
 import styles from './index.module.less'
+import api from '@/api'
+import storage from '@/utils/storage'
 
 const { Header, Content, Footer, Sider } = Layout
 
 const App: React.FC = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken()
+  useEffect(() => {
+    getUserInfo()
+  }, [])
+  const getUserInfo = async () => {
+    const data = await api.getUserInfo()
+    storage.set('userInfo', data)
+    console.log('data', data)
+  }
 
   return (
     <Watermark content='栉云版权'>

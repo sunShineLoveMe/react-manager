@@ -8,13 +8,17 @@ import { useState } from 'react'
 export default function LoginFC() {
   const [loading, setLoading] = useState(false)
   const onFinish = async (values: Login.params) => {
-    setLoading(true)
-    const data = await api.login(values)
-    setLoading(false)
-    storage.set('token', data)
-    message.success('登陆成功')
-    const params = new URLSearchParams(location.search)
-    location.href = params.get('callback') || '/welcome'
+    try {
+      setLoading(true)
+      const data = await api.login(values)
+      setLoading(false)
+      storage.set('token', data)
+      message.success('登陆成功')
+      const params = new URLSearchParams(location.search)
+      location.href = params.get('callback') || '/welcome'
+    } catch (error) {
+      setLoading(false)
+    }
   }
 
   return (

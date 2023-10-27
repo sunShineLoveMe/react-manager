@@ -4,6 +4,7 @@ import api from '@/api'
 import { Login } from '@/types/api'
 import storage from '@/utils/storage'
 import { useState } from 'react'
+import store from '@/store'
 
 export default function LoginFC() {
   const [loading, setLoading] = useState(false)
@@ -13,6 +14,7 @@ export default function LoginFC() {
       const data = await api.login(values)
       setLoading(false)
       storage.set('token', data)
+      store.token = data
       message.success('登陆成功')
       const params = new URLSearchParams(location.search)
       location.href = params.get('callback') || '/welcome'

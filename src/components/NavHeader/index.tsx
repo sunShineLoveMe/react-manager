@@ -4,8 +4,10 @@ import type { MenuProps } from 'antd'
 import styles from './index.module.less'
 import store from '@/store'
 import storage from '@/utils/storage'
+import { useBearStore } from '@/store'
 
 const NavHeader = () => {
+  const userInfo = useBearStore(state => state.userInfo)
   const breadList = [
     {
       title: '首页',
@@ -18,7 +20,7 @@ const NavHeader = () => {
   const items: MenuProps['items'] = [
     {
       key: 'email',
-      label: '邮箱: ' + store.userInfo.userEmail,
+      label: '邮箱: ' + userInfo.userEmail,
     },
     {
       key: 'logout',
@@ -42,7 +44,7 @@ const NavHeader = () => {
       <div className='right'>
         <Switch checkedChildren='暗黑' unCheckedChildren='默认' style={{ marginRight: 10 }} />
         <Dropdown menu={{ items, onClick }} trigger={['click']}>
-          <span className={styles.nickName}>{store.userInfo.userName}</span>
+          <span className={styles.nickName}>{userInfo.userName}</span>
         </Dropdown>
       </div>
     </div>

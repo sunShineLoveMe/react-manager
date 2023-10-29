@@ -4,6 +4,7 @@ import Welcome from '@/views/welcome'
 import Error403 from '@/views/403'
 import NotFound from '@/views/404'
 import Layout from '@/layout'
+import DashBoard from '@/views/dashboard'
 
 const router = [
   {
@@ -20,6 +21,10 @@ const router = [
       {
         path: '/welcome',
         element: <Welcome />,
+      },
+      {
+        path: '/dashboard',
+        element: <DashBoard />,
       },
     ],
   },

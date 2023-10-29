@@ -3,7 +3,8 @@
  */
 
 // 格式化金额
-export const formatMoney = (num: number | string) => {
+export const formatMoney = (num?: number | string) => {
+  if (!num) return '0.00'
   const a = parseFloat(num.toString())
   return a.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })
 }
@@ -53,4 +54,11 @@ export const formatDate = (date?: Date | string, rule?: string) => {
     // fmt = fmt.replace(new RegExp(`(${k})`), ('00' + val).substring(val.length))
   }
   return fmt
+}
+
+// 用户状态转换
+export const formateState = (state: number) => {
+  if (state === 1) return '在职'
+  if (state === 2) return '试用期'
+  if (state === 3) return '离职'
 }

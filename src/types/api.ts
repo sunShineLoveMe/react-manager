@@ -1,3 +1,5 @@
+import DashBoard from '@/views/dashboard'
+
 export interface Result<T = any> {
   code: number
   msg: string
@@ -26,5 +28,14 @@ export namespace User {
     createId: number
     deptName: string
     userImg: string
+  }
+}
+
+export namespace Dashboard {
+  export interface ReportData {
+    driverCount: number
+    totalMoney: number
+    orderCount: number
+    cityNum: number
   }
 }

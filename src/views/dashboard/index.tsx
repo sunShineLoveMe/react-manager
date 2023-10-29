@@ -22,38 +22,20 @@ export default function DashBoard() {
   // 初始化雷达图
   const [radarRef, radarChart] = useCharts()
   useEffect(() => {
-    lineChart?.setOption({
-      tooltip: {
-        trigger: 'axis',
-      },
-      legend: {
-        data: ['订单', '流水'],
-      },
-      grid: {
-        left: '5%',
-        right: '15%',
-        bottom: '10%',
-      },
-      xAxis: {
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          name: '订单',
-          type: 'line',
-          data: [5, 20, 36, 10, 10, 20, 30, 40, 50, 60, 70, 80],
-        },
-        {
-          name: '流水',
-          type: 'line',
-          data: [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 2500, 3000, 3500, 4000],
-        },
-      ],
-    })
+    renderLineChart()
+    renderPieChart1()
+    renderPieChart2()
+    renderRadarChart()
+  }, [lineChart, pieChart1, pieChart2, radarChart])
 
+  const getReportData = async () => {
+    const data = await api.getReportData()
+    setReport(data)
+  }
+
+  const renderPieChart1 = async () => {
+    if (!pieChart1) return
+    const data = await api.getPieCityData()
     pieChart1?.setOption({
       title: {
         text: '司机城市分布',
@@ -71,17 +53,15 @@ export default function DashBoard() {
           name: '城市分布',
           type: 'pie',
           radius: '50%',
-          data: [
-            { value: 335, name: '北京' },
-            { value: 310, name: '上海' },
-            { value: 234, name: '广州' },
-            { value: 135, name: '深圳' },
-            { value: 348, name: '杭州' },
-          ],
+          data: data,
         },
       ],
     })
+  }
 
+  const renderPieChart2 = async () => {
+    if (!pieChart2) return
+    const data = await api.getPieAgeData()
     pieChart2?.setOption({
       title: {
         text: '司机年龄分布',
@@ -100,52 +80,70 @@ export default function DashBoard() {
           type: 'pie',
           roseType: 'area',
           radius: [50, 180],
-          data: [
-            { value: 30, name: '北京' },
-            { value: 20, name: '上海' },
-            { value: 34, name: '广州' },
-            { value: 25, name: '深圳' },
-            { value: 40, name: '杭州' },
-          ],
+          data: data,
         },
       ],
     })
+  }
 
+  const renderRadarChart = async () => {
+    if (!radarChart) return
+    const data = await api.getRadarData()
     radarChart?.setOption({
-      // title: {
-      //   text: '司机模型诊断',
-      //   left: 'center',
-      // },
       legend: {
         data: ['司机模型诊断'],
       },
       radar: {
-        indicator: [
-          { name: '服务态度', max: 10 },
-          { name: '在线时长', max: 600 },
-          { name: '接单率', max: 100 },
-          { name: '评分', max: 5 },
-          { name: '关注度', max: 10000 },
-        ],
+        indicator: data.indicator,
       },
       series: [
         {
           name: '模型诊断',
           type: 'radar',
-          data: [
-            {
-              value: [8, 300, 80, 4.6, 5000],
-              name: '司机模型诊断',
-            },
-          ],
+          data: data.data,
         },
       ],
     })
-  }, [lineChart, pieChart1, pieChart2, radarChart])
-
-  const getReportData = async () => {
-    const data = await api.getReportData()
-    setReport(data)
+  }
+  const renderLineChart = async () => {
+    if (!lineChart) return
+    const data = await api.getLineData()
+    lineChart?.setOption({
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['订单', '流水'],
+      },
+      grid: {
+        left: '5%',
+        right: '15%',
+        bottom: '10%',
+      },
+      xAxis: {
+        data: data.label,
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          name: '订单',
+          type: 'line',
+          data: data.order,
+        },
+        {
+          name: '流水',
+          type: 'line',
+          data: data.money,
+        },
+      ],
+    })
+  }
+  // 刷新饼图
+  const handleRefreshPie = () => {
+    renderPieChart1()
+    renderPieChart2()
   }
 
   useEffect(() => {
@@ -184,12 +182,26 @@ export default function DashBoard() {
         </div>
       </div>
       <div className={styles.chart}>
-        <Card title='订单和流水走势图' extra={<Button type='primary'>刷新</Button>}>
+        <Card
+          title='订单和流水走势图'
+          extra={
+            <Button type='primary' onClick={renderLineChart}>
+              刷新
+            </Button>
+          }
+        >
           <div ref={lineRef} className={styles.itemChart}></div>
         </Card>
       </div>
       <div className={styles.chart}>
-        <Card title='司机分布' extra={<Button type='primary'>刷新</Button>}>
+        <Card
+          title='司机分布'
+          extra={
+            <Button type='primary' onClick={handleRefreshPie}>
+              刷新
+            </Button>
+          }
+        >
           <div className={styles.pieChart}>
             <div ref={pieRef1} className={styles.itemPie}></div>
             <div ref={pieRef2} className={styles.itemPie}></div>
@@ -197,7 +209,14 @@ export default function DashBoard() {
         </Card>
       </div>
       <div className={styles.chart}>
-        <Card title='模型诊断' extra={<Button type='primary'>刷新</Button>}>
+        <Card
+          title='模型诊断'
+          extra={
+            <Button type='primary' onClick={renderRadarChart}>
+              刷新
+            </Button>
+          }
+        >
           <div ref={radarRef} className={styles.itemChart}></div>
         </Card>
       </div>

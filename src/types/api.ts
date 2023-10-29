@@ -38,4 +38,23 @@ export namespace Dashboard {
     orderCount: number
     cityNum: number
   }
+
+  export interface LineData {
+    label: string[]
+    order: string[]
+    money: string[]
+  }
+
+  export interface PieData {
+    name: string
+    value: number
+  }
+
+  export interface RadarData {
+    indicator: Array<{ name: string; max: number }>
+    data: {
+      name: string
+      value: number[]
+    }
+  }
 }

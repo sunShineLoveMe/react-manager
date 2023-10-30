@@ -14,7 +14,7 @@ export default function UserList() {
   const [total, setTotal] = useState(0)
   const [userIds, setUserIds] = useState<number[]>([])
   const userRef = useRef<{
-    open: (type: IAction, data?: User.UserItem) => void | undefined
+    open: (type: IAction, data?: User.UserItem) => void
   }>()
   const [pagination, setPagination] = useState({
     current: 1,
@@ -31,7 +31,6 @@ export default function UserList() {
   const handleSearch = () => {
     getUserList({
       pageNum: 1,
-      pageSize: pagination.pageSize,
     })
   }
   // 创建用户
@@ -76,7 +75,6 @@ export default function UserList() {
       setUserIds([])
       getUserList({
         pageNum: 1,
-        pageSize: pagination.pageSize,
       })
     } catch (error) {}
   }
@@ -90,10 +88,10 @@ export default function UserList() {
     const data = await api.getUserList({
       ...values,
       pageNum: params.pageNum,
-      pageSize: params.pageSize,
+      pageSize: params.pageSize || pagination.pageSize,
     })
     setData(data.list)
-    setTotal(data.list.length)
+    setTotal(data.page.total)
     setPagination({
       current: data.page.pageNum,
       pageSize: data.page.pageSize,
@@ -241,7 +239,6 @@ export default function UserList() {
         update={() => {
           getUserList({
             pageNum: 1,
-            pageSize: pagination.pageSize,
           })
         }}
       />

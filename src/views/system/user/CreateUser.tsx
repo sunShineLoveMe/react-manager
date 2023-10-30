@@ -86,6 +86,7 @@ const CreateUser = (props: IModalProp) => {
 
   const handleCancel = () => {
     setVisible(false)
+    setImg('')
     form.resetFields()
   }
   return (
@@ -102,13 +103,35 @@ const CreateUser = (props: IModalProp) => {
         <Form.Item name='userId' hidden>
           <Input />
         </Form.Item>
-        <Form.Item label='用户名称' name='userName' rules={[{ required: true, message: '请输入用户名称' }]}>
+        <Form.Item
+          label='用户名称'
+          name='userName'
+          rules={[
+            { required: true, message: '请输入用户名称' },
+            { min: 5, max: 12, message: '用户名称最小5个字符，最大12个字符' },
+          ]}
+        >
           <Input placeholder='请输入用户名称'></Input>
         </Form.Item>
-        <Form.Item label='用户邮箱' name='userEmail' rules={[{ required: true, message: '请输入用户邮箱' }]}>
-          <Input placeholder='请输入用户邮箱'></Input>
+        <Form.Item
+          label='用户邮箱'
+          name='userEmail'
+          rules={[
+            { required: true, message: '请输入用户邮箱' },
+            { type: 'email', message: '请输入正确的邮箱' },
+            { pattern: /^\w+@mars.com$/, message: '邮箱必须以@mars.com结尾' },
+          ]}
+        >
+          <Input placeholder='请输入用户邮箱' disabled={action === 'edit'}></Input>
         </Form.Item>
-        <Form.Item label='手机号' name='mobile'>
+        <Form.Item
+          label='手机号'
+          name='mobile'
+          rules={[
+            { len: 11, message: '请输入11位手机号' },
+            { pattern: /1[1-9]\d{9}/, message: '请输入1开头的11位手机号' },
+          ]}
+        >
           <Input type='number' placeholder='请输入手机号'></Input>
         </Form.Item>
         <Form.Item label='部门' name='deptId'>

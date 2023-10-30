@@ -24,7 +24,7 @@ export namespace Login {
 
 export interface PageParams {
   pageNum: number
-  pageSize: number
+  pageSize?: number
 }
 
 export namespace User {

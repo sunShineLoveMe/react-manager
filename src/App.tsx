@@ -1,7 +1,8 @@
 import { BrowserRouter, RouterProvider } from 'react-router-dom'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, App as AntApp } from 'antd'
 import Router from './router'
 import './App.less'
+import AntdGlobal from './utils/AntdGlobal'
 
 function App() {
   return (
@@ -12,9 +13,12 @@ function App() {
         },
       }}
     >
-      <BrowserRouter>
-        <Router />
-      </BrowserRouter>
+      <AntApp>
+        <AntdGlobal />
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </AntApp>
     </ConfigProvider>
   )
 }

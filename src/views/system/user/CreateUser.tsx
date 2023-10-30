@@ -27,6 +27,10 @@ const CreateUser = (props: IModalProp) => {
   const open = (type: IAction, data?: User.UserItem) => {
     setAction(type)
     setVisible(true)
+    if (type === 'edit' && data) {
+      form.setFieldsValue(data)
+      setImg(data.userImg)
+    }
   }
 
   const handleSubmit = async () => {
@@ -38,11 +42,14 @@ const CreateUser = (props: IModalProp) => {
         userImg: img,
       }
       if (action === 'create') {
-        const data = api.createUser(params)
+        api.createUser(params)
         message.success('创建成功')
-        handleCancel()
-        props.update()
+      } else {
+        await api.editUser(params)
+        message.success('编辑成功')
       }
+      handleCancel()
+      props.update()
     }
   }
   // 上传之前接口处理
@@ -92,6 +99,9 @@ const CreateUser = (props: IModalProp) => {
       onCancel={handleCancel}
     >
       <Form form={form} labelCol={{ span: 4 }} labelAlign='right'>
+        <Form.Item name='userId' hidden>
+          <Input />
+        </Form.Item>
         <Form.Item label='用户名称' name='userName' rules={[{ required: true, message: '请输入用户名称' }]}>
           <Input placeholder='请输入用户名称'></Input>
         </Form.Item>

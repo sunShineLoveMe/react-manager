@@ -32,8 +32,13 @@ export default function UserList() {
       pageSize: pagination.pageSize,
     })
   }
+  // 创建用户
   const handleCreate = () => {
     userRef.current?.open('create')
+  }
+  // 编辑用户
+  const handleEdit = (record: User.UserItem) => {
+    userRef.current?.open('edit', record)
   }
   // 重置
   const handleReset = () => {
@@ -47,16 +52,8 @@ export default function UserList() {
       pageNum: params.pageNum,
       pageSize: params.pageSize,
     })
-
-    const list = Array.from({ length: 50 })
-      .fill({})
-      .map((item: any) => {
-        item = { ...data.list[0] }
-        item.userId = Math.random()
-        return item
-      })
-    setData(list)
-    setTotal(list.length)
+    setData(data.list)
+    setTotal(data.list.length)
     setPagination({
       current: data.page.pageNum,
       pageSize: data.page.pageSize,
@@ -114,12 +111,13 @@ export default function UserList() {
     },
     {
       title: '操作',
-      dataIndex: 'action',
       key: 'action',
-      render(record, values) {
+      render(record) {
         return (
           <Space>
-            <Button type='text'>编辑</Button>
+            <Button type='text' onClick={() => handleEdit(record)}>
+              编辑
+            </Button>
             <Button type='text' danger>
               删除
             </Button>

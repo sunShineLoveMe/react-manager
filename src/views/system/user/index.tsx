@@ -1,25 +1,20 @@
 import { Button, Table, Form, Input, Select, Space } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { User } from '@/types/api'
+import { useEffect, useState } from 'react'
+import api from '@/api'
+import { format } from 'path'
+import { formatDate } from '@/utils'
 
 export default function UserList() {
-  const dataSource = [
-    {
-      _id: '',
-      userId: 0,
-      userName: '',
-      userEmail: '',
-      deptId: '',
-      state: 0,
-      mobile: '',
-      job: '',
-      role: 0,
-      roleList: '',
-      createId: 0,
-      deptName: '',
-      userImg: '',
-    },
-  ]
+  const [data, setData] = useState<User.UserItem[]>([])
+  useEffect(() => {
+    getUserList()
+  }, [])
+  const getUserList = async () => {
+    const data = await api.getUserList()
+    setData(data.list)
+  }
 
   const columns: ColumnsType<User.UserItem> = [
     {
@@ -41,16 +36,34 @@ export default function UserList() {
       title: '用户角色',
       dataIndex: 'role',
       key: 'role',
+      render(role: number) {
+        return {
+          0: '超级管理员',
+          1: '管理员',
+          2: '体验管理员',
+          3: '普通用户',
+        }[role]
+      },
     },
     {
       title: '用户状态',
       dataIndex: 'state',
       key: 'state',
+      render(state: number) {
+        return {
+          1: '在职',
+          2: '离职',
+          3: '试用期',
+        }[state]
+      },
     },
     {
       title: '注册时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render(createTime: string) {
+        return formatDate(createTime)
+      },
     },
     {
       title: '操作',
@@ -103,7 +116,7 @@ export default function UserList() {
             </Button>
           </div>
         </div>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table bordered rowSelection={{ type: 'checkbox' }} dataSource={data} columns={columns} />
       </div>
     </div>
   )

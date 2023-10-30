@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { Login, User, Dashboard } from '@/types/api'
+import { Login, User, Dashboard, ResultData } from '@/types/api'
 
 export default {
   login(params: Login.params) {
@@ -30,5 +30,10 @@ export default {
   // 获取雷达数据
   getRadarData() {
     return request.get<Dashboard.RadarData>('/order/dashboard/getRadarData')
+  },
+
+  // 获取用户列表
+  getUserList() {
+    return request.get<ResultData<User.UserItem>>('/users/list')
   },
 }

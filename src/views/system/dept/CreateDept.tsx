@@ -5,7 +5,7 @@ import { Dept, User } from '@/types/api'
 import api from '@/api'
 import { message } from '@/utils/AntdGlobal'
 
-export default function CreateDept(props: IModalProp) {
+export default function CreateDept(props: IModalProp<Dept.EditParams>) {
   const [form] = Form.useForm()
   const [action, setAction] = useState<IAction>('create')
   const [visible, setVisible] = useState(false)

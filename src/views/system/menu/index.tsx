@@ -5,10 +5,16 @@ import { Menu } from '@/types/api'
 import { ColumnsType } from 'antd/es/table'
 import { message } from '@/utils/AntdGlobal'
 import { formatDate } from '@/utils'
+import { IAction } from '@/types/modal'
+import CreateMenu from './CreateMenu'
 
 export default function DeptList() {
   const [form] = Form.useForm()
   const [data, setData] = useState<Menu.MenuItem[]>([])
+
+  const menuRef = useRef<{
+    open: (type: IAction, data?: Menu.EditParams | { parentId: string }) => void
+  }>()
 
   useEffect(() => {
     getMenuList()
@@ -20,7 +26,7 @@ export default function DeptList() {
   }
   // 创建部门信息
   const handleCreate = () => {
-    // deptRef.current?.open('create')
+    menuRef.current?.open('create')
   }
   // 重置搜索条件
   const handleReset = () => {
@@ -28,7 +34,7 @@ export default function DeptList() {
   }
   // 编辑部门信息
   const handleEdit = (record: Menu.MenuItem) => {
-    // deptRef.current?.open('edit', record)
+    menuRef.current?.open('edit', record)
   }
 
   // 删除部门
@@ -51,7 +57,7 @@ export default function DeptList() {
   }
 
   const handleSubCreate = (id: string) => {
-    // deptRef.current?.open('create', { parentId: id })
+    // menuRef.current?.open('create', { parentId: id })
   }
 
   const columns: ColumnsType<Menu.MenuItem> = [
@@ -153,6 +159,7 @@ export default function DeptList() {
         </div>
         <Table bordered rowKey='_id' columns={columns} dataSource={data} pagination={false} />
       </div>
+      <CreateMenu mRef={menuRef} update={getMenuList} />
     </div>
   )
 }

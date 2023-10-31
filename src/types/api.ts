@@ -50,6 +50,10 @@ export namespace Menu {
     buttons?: MenuItem[]
     children?: MenuItem[]
   }
+  // 菜单编辑
+  export interface EditParams extends CreateParams {
+    _id: string
+  }
 }
 
 // 部门信息类型

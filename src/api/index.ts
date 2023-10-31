@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { Login, User, Dashboard, ResultData } from '@/types/api'
+import { Login, User, Dashboard, ResultData, Dept } from '@/types/api'
 
 export default {
   login(params: Login.params) {
@@ -50,5 +50,10 @@ export default {
   // 删除用户
   delUser(params: { userIds: number[] }) {
     return request.post('/users/delete', params)
+  },
+
+  // 部门管理-获取部门列表
+  getDeptList(params: Dept.Params) {
+    return request.get<Dept.DeptItem[]>('/dept/list', params)
   },
 }

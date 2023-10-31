@@ -6,6 +6,7 @@ import NotFound from '@/views/404'
 import Layout from '@/layout'
 import DashBoard from '@/views/dashboard'
 import User from '@/views/system/user'
+import Dept from '@/views/system/dept'
 
 const router = [
   {
@@ -30,6 +31,10 @@ const router = [
       {
         path: '/userList',
         element: <User />,
+      },
+      {
+        path: '/deptList',
+        element: <Dept />,
       },
     ],
   },

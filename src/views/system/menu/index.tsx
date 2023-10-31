@@ -13,7 +13,7 @@ export default function DeptList() {
   const [data, setData] = useState<Menu.MenuItem[]>([])
 
   const menuRef = useRef<{
-    open: (type: IAction, data?: Menu.EditParams | { parentId: string }) => void
+    open: (type: IAction, data?: Menu.EditParams | { parentId?: string; orderBy?: number }) => void
   }>()
 
   useEffect(() => {
@@ -26,38 +26,44 @@ export default function DeptList() {
   }
   // 创建部门信息
   const handleCreate = () => {
-    menuRef.current?.open('create')
+    menuRef.current?.open('create', {
+      orderBy: data.length,
+    })
   }
   // 重置搜索条件
   const handleReset = () => {
     form.resetFields()
   }
-  // 编辑部门信息
+  // 编辑菜单信息
   const handleEdit = (record: Menu.MenuItem) => {
     menuRef.current?.open('edit', record)
   }
 
-  // 删除部门
-  const handleDelete = (id: string) => {
+  // 删除菜单
+  const handleDelete = (record: Menu.MenuItem) => {
+    let text = ''
+    if (record.menuType == 1) text = '菜单'
+    if (record.menuType == 2) text = '按钮'
+    if (record.menuType == 3) text = '页面'
     Modal.confirm({
       title: '确认',
-      content: '确认删除该部门吗？',
+      content: `确认删除该${text}吗？`,
       okText: '确认',
       cancelText: '取消',
       onOk() {
-        handleDelSubmit(id)
+        handleDelSubmit(record._id)
       },
     })
   }
   // 删除提交
   const handleDelSubmit = async (_id: string) => {
-    await api.delDept({ _id })
+    await api.deleteMenu({ _id })
     message.success('删除成功')
     getMenuList()
   }
 
-  const handleSubCreate = (id: string) => {
-    // menuRef.current?.open('create', { parentId: id })
+  const handleSubCreate = (record: Menu.MenuItem) => {
+    menuRef.current?.open('create', { parentId: record._id, orderBy: record.children?.length })
   }
 
   const columns: ColumnsType<Menu.MenuItem> = [
@@ -113,13 +119,13 @@ export default function DeptList() {
       render(_, record) {
         return (
           <Space>
-            <Button type='text' onClick={() => handleSubCreate(record._id)}>
+            <Button type='text' onClick={() => handleSubCreate(record)}>
               新增
             </Button>
             <Button type='text' onClick={() => handleEdit(record)}>
               编辑
             </Button>
-            <Button type='text' onClick={() => handleDelete(record._id)}>
+            <Button type='text' danger onClick={() => handleDelete(record)}>
               删除
             </Button>
           </Space>
@@ -129,7 +135,7 @@ export default function DeptList() {
   ]
   return (
     <div>
-      <Form className='search-form' layout='inline' form={form}>
+      <Form className='search-form' layout='inline' form={form} initialValues={{ menuState: 1 }}>
         <Form.Item label='菜单名称' name='menuName'>
           <Input placeholder='菜单名称' />
         </Form.Item>

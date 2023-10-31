@@ -54,6 +54,11 @@ export namespace Menu {
   export interface EditParams extends CreateParams {
     _id: string
   }
+
+  // 删除菜单
+  export interface DelParams {
+    _id: string
+  }
 }
 
 // 部门信息类型

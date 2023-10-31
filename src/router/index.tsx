@@ -8,6 +8,7 @@ import DashBoard from '@/views/dashboard'
 import User from '@/views/system/user'
 import Dept from '@/views/system/dept'
 import Menu from '@/views/system/menu'
+import AuthLoader from './AuthLoader'
 
 const router = [
   {
@@ -20,6 +21,7 @@ const router = [
   },
   {
     element: <Layout />,
+    loader: AuthLoader,
     children: [
       {
         path: '/welcome',

@@ -6,7 +6,7 @@ import api from '@/api'
 import { message } from '@/utils/AntdGlobal'
 import { InfoCircleOutlined } from '@ant-design/icons'
 
-export default function CreateDept(props: IModalProp<Menu.EditParams>) {
+export default function CreateMenu(props: IModalProp<Menu.EditParams>) {
   const [form] = Form.useForm()
   const [action, setAction] = useState<IAction>('create')
   const [visible, setVisible] = useState(false)
@@ -20,7 +20,7 @@ export default function CreateDept(props: IModalProp<Menu.EditParams>) {
   useImperativeHandle(props.mRef, () => ({
     open,
   }))
-
+  // 打开弹窗函数
   const open = (type: IAction, data?: Menu.EditParams | { parentId: string }) => {
     setAction(type)
     setVisible(true)
@@ -30,14 +30,14 @@ export default function CreateDept(props: IModalProp<Menu.EditParams>) {
     }
   }
 
-  // 部门信息提交
+  // 菜单提交
   const handleSubmit = async () => {
     const valid = await form.validateFields()
     if (valid) {
       if (action === 'create') {
-        await api.createDept(form.getFieldsValue())
+        await api.createMenu(form.getFieldsValue())
       } else {
-        await api.editDept(form.getFieldsValue())
+        await api.editMenu(form.getFieldsValue())
       }
       message.success('操作成功')
       handleCancel()
@@ -63,7 +63,7 @@ export default function CreateDept(props: IModalProp<Menu.EditParams>) {
         <Form.Item hidden name='_id'>
           <Input />
         </Form.Item>
-        <Form.Item label='上级部门' name='parentId'>
+        <Form.Item label='上级菜单' name='parentId'>
           <TreeSelect
             placeholder='请选择父级菜单'
             allowClear
@@ -104,7 +104,7 @@ export default function CreateDept(props: IModalProp<Menu.EditParams>) {
         <Form.Item label='组件名称' name='component'>
           <Input placeholder='请输入组件名称' />
         </Form.Item>
-        <Form.Item label='排序' name='component' tooltip={{ title: '排序值越大越靠后', icon: <InfoCircleOutlined /> }}>
+        <Form.Item label='排序' name='orderBy' tooltip={{ title: '排序值越大越靠后', icon: <InfoCircleOutlined /> }}>
           <InputNumber placeholder='请输入排序值' />
         </Form.Item>
         <Form.Item label='菜单状态' name='menuState'>

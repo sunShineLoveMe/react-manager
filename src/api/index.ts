@@ -2,13 +2,20 @@ import request from '@/utils/request'
 import { Login, User, Dashboard, ResultData, Dept, Menu } from '@/types/api'
 
 export default {
+  // 登陆
   login(params: Login.params) {
     return request.post<string>('/users/login', params, { showLoading: false })
   },
-
+  // 用户信息
   getUserInfo() {
     return request.get<User.UserItem>('/users/getUserInfo')
   },
+
+  // 获取权限列表
+  getPermissionList() {
+    return request.get<{ buttonList: string[]; menuList: Menu.MenuItem[] }>('users/getPermissionList')
+  },
+
   // 获取工作台汇总数据
   getReportData() {
     return request.get<Dashboard.ReportData>('/order/dashboard/getReportData')
@@ -79,5 +86,17 @@ export default {
   // 菜单管理
   getMenuList(params?: Menu.Params) {
     return request.get<Menu.MenuItem[]>('/menu/list', params)
+  },
+  // 创建菜单
+  createMenu(params: Menu.CreateParams) {
+    return request.post('/menu/create', params)
+  },
+  // 编辑菜单
+  editMenu(params: Menu.EditParams) {
+    return request.post('/menu/edit', params)
+  },
+  // 删除菜单
+  deleteMenu(params: Menu.DelParams) {
+    return request.post('/menu/delete', params)
   },
 }

@@ -27,6 +27,31 @@ export interface PageParams {
   pageSize?: number
 }
 
+// 菜单管理
+export namespace Menu {
+  export interface Params {
+    menuName: string
+    menuState: number
+  }
+  export interface CreateParams {
+    menuName: string
+    icon?: string // 菜单图标
+    menuType: number // 菜单类型 1：菜单 2：按钮 3：页面
+    menuState: number // 菜单正常 停用
+    menuCode?: string // 按钮权限标识
+    parentId?: string // 父级菜单id
+    path?: string // 菜单路径
+    component?: string // 组件名称
+  }
+
+  export interface MenuItem extends CreateParams {
+    _id: string
+    createTime: string
+    buttons?: MenuItem[]
+    children?: MenuItem[]
+  }
+}
+
 // 部门信息类型
 export namespace Dept {
   export interface Params {

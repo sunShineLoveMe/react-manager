@@ -53,7 +53,27 @@ export default {
   },
 
   // 部门管理-获取部门列表
-  getDeptList(params: Dept.Params) {
+  getDeptList(params?: Dept.Params) {
     return request.get<Dept.DeptItem[]>('/dept/list', params)
+  },
+
+  // 获取当前账号下的所有用户
+  getAllUserList() {
+    return request.get<User.UserItem[]>('/users/all/list')
+  },
+
+  // 创建部门信息
+  createDept(params: Dept.CreateParams) {
+    return request.post('/dept/create', params)
+  },
+
+  // 修改部门信息
+  editDept(params: Dept.EditParams) {
+    return request.post('/dept/edit', params)
+  },
+
+  // 删除部门信息
+  delDept(params: Dept.DelParams) {
+    return request.post('/dept/delete', params)
   },
 }

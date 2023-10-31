@@ -1,12 +1,20 @@
-import { Form, Input, Button, Table, Space } from 'antd'
-import { useForm } from 'antd/es/form/Form'
-import { useEffect, useState } from 'react'
+import { Form, Input, Button, Table, Space, Modal } from 'antd'
+import { useEffect, useState, useRef } from 'react'
 import api from '@/api'
 import { Dept } from '@/types/api'
+import CreateDept from './CreateDept'
+import { IAction } from '@/types/modal'
+import { ColumnsType } from 'antd/es/table'
+import { message } from '@/utils/AntdGlobal'
+import { formatDate } from '@/utils'
 
 export default function DeptList() {
   const [form] = Form.useForm()
   const [data, setData] = useState<Dept.DeptItem[]>([])
+
+  const deptRef = useRef<{
+    open: (type: IAction, data?: Dept.EditParams | { parentId: string }) => void
+  }>()
 
   useEffect(() => {
     getDeptList()
@@ -16,12 +24,43 @@ export default function DeptList() {
     const data = await api.getDeptList(form.getFieldsValue())
     setData(data)
   }
-
+  // 创建部门信息
+  const handleCreate = () => {
+    deptRef.current?.open('create')
+  }
+  // 重置搜索条件
   const handleReset = () => {
     form.resetFields()
   }
+  // 编辑部门信息
+  const handleEdit = (record: Dept.DeptItem) => {
+    deptRef.current?.open('edit', record)
+  }
 
-  const columns = [
+  // 删除部门
+  const handleDelete = (id: string) => {
+    Modal.confirm({
+      title: '确认',
+      content: '确认删除该部门吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        handleDelSubmit(id)
+      },
+    })
+  }
+  // 删除提交
+  const handleDelSubmit = async (_id: string) => {
+    await api.delDept({ _id })
+    message.success('删除成功')
+    getDeptList()
+  }
+
+  const handleSubCreate = (id: string) => {
+    deptRef.current?.open('create', { parentId: id })
+  }
+
+  const columns: ColumnsType<Dept.DeptItem> = [
     {
       title: '部门名称',
       dataIndex: 'deptName',
@@ -38,22 +77,34 @@ export default function DeptList() {
       title: '更新时间',
       dataIndex: 'updateTime',
       key: 'updateTime',
+      render(updateTime) {
+        return formatDate(updateTime)
+      },
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render(createTime) {
+        return formatDate(createTime)
+      },
     },
     {
       title: '操作',
       key: 'action',
       width: 200,
-      render() {
+      render(_, record) {
         return (
           <Space>
-            <Button type='text'>新增</Button>
-            <Button type='text'>编辑</Button>
-            <Button type='text'>删除</Button>
+            <Button type='text' onClick={() => handleSubCreate(record._id)}>
+              新增
+            </Button>
+            <Button type='text' onClick={() => handleEdit(record)}>
+              编辑
+            </Button>
+            <Button type='text' onClick={() => handleDelete(record._id)}>
+              删除
+            </Button>
           </Space>
         )
       },
@@ -78,11 +129,14 @@ export default function DeptList() {
         <div className='header-wrapper'>
           <div className='title'>部门列表</div>
           <div className='action'>
-            <Button>新增</Button>
+            <Button type='primary' onClick={handleCreate}>
+              新增
+            </Button>
           </div>
         </div>
         <Table bordered rowKey='_id' columns={columns} dataSource={data} pagination={false} />
       </div>
+      <CreateDept mRef={deptRef} update={getDeptList} />
     </div>
   )
 }

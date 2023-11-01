@@ -4,6 +4,7 @@ import { Role } from '@/types/api'
 import api from '@/api/roleApi'
 import { formatDate } from '@/utils'
 import CreateRole from './CreateRole'
+import SetPermission from './setPermission'
 import { useRef } from 'react'
 import { IAction } from '@/types/modal'
 import { ColumnsType } from 'antd/es/table'
@@ -12,6 +13,10 @@ import { message } from '@/utils/AntdGlobal'
 export default function RoleList() {
   const [form] = Form.useForm()
   const roleRef = useRef<{
+    open: (type: IAction, data?: Role.RoleItem) => void
+  }>()
+
+  const permissionRef = useRef<{
     open: (type: IAction, data?: Role.RoleItem) => void
   }>()
 
@@ -70,7 +75,9 @@ export default function RoleList() {
             <Button type='text' onClick={() => handleEdit(record)}>
               编辑
             </Button>
-            <Button type='text'>设置权限</Button>
+            <Button type='text' onClick={() => handleSetPermission(record)}>
+              设置权限
+            </Button>
             <Button type='text' danger onClick={() => handleDelete(record._id)}>
               删除
             </Button>
@@ -99,6 +106,10 @@ export default function RoleList() {
         search.submit()
       },
     })
+  }
+
+  const handleSetPermission = (record: Role.RoleItem) => {
+    permissionRef.current?.open('edit', record)
   }
   return (
     <div className='role-wrapper'>
@@ -130,6 +141,7 @@ export default function RoleList() {
       </div>
       {/* 创建角色组件弹窗 */}
       <CreateRole mRef={roleRef} update={search.submit} />
+      <SetPermission mRef={permissionRef} update={search.submit} />
     </div>
   )
 }

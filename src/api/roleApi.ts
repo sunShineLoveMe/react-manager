@@ -21,4 +21,9 @@ export default {
   delRole(params: { _id: string }) {
     return request.post('/roles/delete', params)
   },
+
+  // 设置权限
+  updatePermission(params: Role.Permission) {
+    return request.post('/roles/update/permission', params)
+  },
 }

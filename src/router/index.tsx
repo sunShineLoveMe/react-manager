@@ -8,6 +8,7 @@ import DashBoard from '@/views/dashboard'
 import User from '@/views/system/user'
 import Dept from '@/views/system/dept'
 import Menu from '@/views/system/menu'
+import Role from '@/views/system/role'
 import AuthLoader from './AuthLoader'
 
 export const router = [
@@ -43,6 +44,10 @@ export const router = [
       {
         path: '/menuList',
         element: <Menu />,
+      },
+      {
+        path: '/roleList',
+        element: <Role />,
       },
     ],
   },

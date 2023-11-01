@@ -1,11 +1,19 @@
-import { Form, Input, Button, Table, Space } from 'antd'
+import { Form, Input, Button, Table, Space, Modal } from 'antd'
 import { useAntdTable } from 'ahooks'
 import { Role } from '@/types/api'
 import api from '@/api/roleApi'
 import { formatDate } from '@/utils'
+import CreateRole from './CreateRole'
+import { useRef } from 'react'
+import { IAction } from '@/types/modal'
+import { ColumnsType } from 'antd/es/table'
+import { message } from '@/utils/AntdGlobal'
 
 export default function RoleList() {
   const [form] = Form.useForm()
+  const roleRef = useRef<{
+    open: (type: IAction, data?: Role.RoleItem) => void
+  }>()
 
   const getTableData = ({ current, pageSize }: { current: number; pageSize: number }, formData: Role.Params) => {
     return api
@@ -26,7 +34,7 @@ export default function RoleList() {
     defaultPageSize: 10,
   })
 
-  const columns = [
+  const columns: ColumnsType<Role.RoleItem> = [
     {
       title: '角色名称',
       dataIndex: 'roleName',
@@ -56,12 +64,14 @@ export default function RoleList() {
     {
       title: '操作',
       key: 'action',
-      render() {
+      render(_, record) {
         return (
           <Space>
-            <Button type='text'>编辑</Button>
+            <Button type='text' onClick={() => handleEdit(record)}>
+              编辑
+            </Button>
             <Button type='text'>设置权限</Button>
-            <Button type='text' danger>
+            <Button type='text' danger onClick={() => handleDelete(record._id)}>
               删除
             </Button>
           </Space>
@@ -69,6 +79,27 @@ export default function RoleList() {
       },
     },
   ]
+
+  // 创建角色
+  const handleCreate = () => {
+    roleRef.current?.open('create')
+  }
+  // 编辑角色
+  const handleEdit = (data: Role.RoleItem) => {
+    roleRef.current?.open('edit', data)
+  }
+  // 删除角色
+  const handleDelete = (_id: string) => {
+    Modal.confirm({
+      title: '确认',
+      content: <span>确认删除该角色吗？</span>,
+      async onOk() {
+        await api.delRole({ _id })
+        message.success('删除成功')
+        search.submit()
+      },
+    })
+  }
   return (
     <div className='role-wrapper'>
       <Form form={form} className='search-form' layout='inline'>
@@ -90,11 +121,15 @@ export default function RoleList() {
         <div className='header-wrapper'>
           <div className='title'></div>
           <div className='action'>
-            <Button type='primary'>新增</Button>
+            <Button type='primary' onClick={handleCreate}>
+              新增
+            </Button>
           </div>
         </div>
-        <Table bordered rowKey='userId' columns={columns} {...tableProps} />
+        <Table bordered rowKey='_id' columns={columns} {...tableProps} />
       </div>
+      {/* 创建角色组件弹窗 */}
+      <CreateRole mRef={roleRef} update={search.submit} />
     </div>
   )
 }

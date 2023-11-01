@@ -6,4 +6,19 @@ export default {
   getRoleList(params: Role.Params) {
     return request.get<ResultData<Role.RoleItem>>('/roles/list', params)
   },
+
+  // 创建角色
+  createRole(params: Role.CreateParams) {
+    return request.post('/roles/create', params)
+  },
+
+  // 编辑角色
+  editRole(params: Role.EditParams) {
+    return request.post('/roles/edit', params)
+  },
+
+  // 删除角色
+  delRole(params: { _id: string }) {
+    return request.post('/roles/delete', params)
+  },
 }

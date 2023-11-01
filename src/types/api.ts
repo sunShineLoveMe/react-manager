@@ -174,4 +174,8 @@ export namespace Role {
     updateTime: string
     createTime: string
   }
+
+  export interface EditParams extends CreateParams {
+    _id: string
+  }
 }

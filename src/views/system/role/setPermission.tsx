@@ -28,12 +28,6 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
     }
   })
 
-  const open = (type: IAction, data?: Role.RoleItem) => {
-    setVisible(true)
-    if (data) {
-      setRoleInfo(data)
-    }
-  }
   const handleOk = async () => {
     if (permission) {
       await roleApi.updatePermission(permission)
@@ -47,6 +41,13 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
     setVisible(false)
     setPermission(undefined)
   }
+
+  const open = (type: IAction, data?: Role.RoleItem) => {
+    setVisible(true)
+    setRoleInfo(data)
+    setCheckedKeys(data?.permissionList.checkedKeys || [])
+  }
+
   const onCheck = (checkedKeysValue: any, item: any) => {
     setCheckedKeys(checkedKeysValue)
     const checkedKeys: string[] = []
@@ -79,7 +80,7 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
       onCancel={handleCancel}
     >
       <Form labelAlign='right' labelCol={{ span: 4 }}>
-        <Form.Item label='角色名称'>产品经理</Form.Item>
+        <Form.Item label='角色名称'>{roleInfo?.roleName}</Form.Item>
         <Form.Item label='权限'>
           <Tree
             checkable

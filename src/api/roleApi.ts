@@ -26,4 +26,9 @@ export default {
   updatePermission(params: Role.Permission) {
     return request.post('/roles/update/permission', params)
   },
+
+  // 获取不带分页的角色列表
+  getAllRoleList() {
+    return request.get<Role.RoleItem[]>('/roles/allList')
+  },
 }

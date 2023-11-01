@@ -10,7 +10,7 @@ import Dept from '@/views/system/dept'
 import Menu from '@/views/system/menu'
 import AuthLoader from './AuthLoader'
 
-const router = [
+export const router = [
   {
     path: '/',
     element: <Navigate to='/welcome' />,
@@ -20,6 +20,7 @@ const router = [
     element: <Login />,
   },
   {
+    id: 'layout',
     element: <Layout />,
     loader: AuthLoader,
     children: [
@@ -59,8 +60,8 @@ const router = [
   },
 ]
 
-export default function Router() {
-  return useRoutes(router)
-}
+// export default function Router() {
+//   return useRoutes(router)
+// }
 
-// export default createBrowserRouter(router)
+export default createBrowserRouter(router)

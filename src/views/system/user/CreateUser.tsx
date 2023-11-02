@@ -39,7 +39,7 @@ const CreateUser = (props: IModalProp) => {
   // 暴露子组件方法
   useImperativeHandle(props.mRef, () => {
     return {
-      open,
+      open
     }
   })
 
@@ -59,7 +59,7 @@ const CreateUser = (props: IModalProp) => {
     if (valid) {
       const params = {
         ...form.getFieldsValue(),
-        userImg: img,
+        userImg: img
       }
       if (action === 'create') {
         api.createUser(params)
@@ -128,7 +128,7 @@ const CreateUser = (props: IModalProp) => {
           name='userName'
           rules={[
             { required: true, message: '请输入用户名称' },
-            { min: 5, max: 12, message: '用户名称最小5个字符，最大12个字符' },
+            { min: 5, max: 12, message: '用户名称最小5个字符，最大12个字符' }
           ]}
         >
           <Input placeholder='请输入用户名称'></Input>
@@ -139,7 +139,7 @@ const CreateUser = (props: IModalProp) => {
           rules={[
             { required: true, message: '请输入用户邮箱' },
             { type: 'email', message: '请输入正确的邮箱' },
-            { pattern: /^\w+@mars.com$/, message: '邮箱必须以@mars.com结尾' },
+            { pattern: /^\w+@mars.com$/, message: '邮箱必须以@mars.com结尾' }
           ]}
         >
           <Input placeholder='请输入用户邮箱' disabled={action === 'edit'}></Input>
@@ -149,7 +149,7 @@ const CreateUser = (props: IModalProp) => {
           name='mobile'
           rules={[
             { len: 11, message: '请输入11位手机号' },
-            { pattern: /1[1-9]\d{9}/, message: '请输入1开头的11位手机号' },
+            { pattern: /1[1-9]\d{9}/, message: '请输入1开头的11位手机号' }
           ]}
         >
           <Input type='number' placeholder='请输入手机号'></Input>
@@ -160,8 +160,8 @@ const CreateUser = (props: IModalProp) => {
           rules={[
             {
               required: true,
-              message: '请选择部门',
-            },
+              message: '请选择部门'
+            }
           ]}
         >
           <TreeSelect
@@ -200,7 +200,7 @@ const CreateUser = (props: IModalProp) => {
             showUploadList={false}
             headers={{
               Authorization: 'Bearer ' + storage.get('token'),
-              icode: '1E53900BEB862EDD',
+              icode: '1E53900BEB862EDD'
             }}
             action='/api/users/upload'
             beforeUpload={beforeUpload}

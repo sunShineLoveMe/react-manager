@@ -3,21 +3,37 @@ import { Layout, theme, Watermark } from 'antd'
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import Menu from '@/components/Menu'
-import { Outlet, useRouteLoaderData } from 'react-router-dom'
+import { Outlet, useRouteLoaderData, useLocation, Navigate } from 'react-router-dom'
 import styles from './index.module.less'
 import api from '@/api'
 import { useStore } from '@/store'
+import { IAuthLoader } from '@/router/AuthLoader'
+import { searchRoute } from '@/utils'
+import { router } from '@/router'
 
 const { Content, Sider } = Layout
 
 const App: React.FC = () => {
   const { updateUserInfo, collapsed } = useStore()
+  const { pathname } = useLocation()
   useEffect(() => {
     getUserInfo()
   }, [])
   const getUserInfo = async () => {
     const data = await api.getUserInfo()
     updateUserInfo(data)
+  }
+
+  const route = searchRoute(pathname, router)
+  if (route && route.meta?.auth === false) {
+    // 继续执行
+  } else {
+    // 权限判断
+    const data = useRouteLoaderData('layout') as IAuthLoader
+    const staticPath = ['/welcome', '/403', '/404']
+    if (!data.menuPathList.includes(pathname) && !staticPath.includes(pathname)) {
+      return <Navigate to='/403' />
+    }
   }
 
   return (

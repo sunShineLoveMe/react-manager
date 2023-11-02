@@ -48,7 +48,7 @@ export const formatDate = (date?: Date | string, rule?: string) => {
     'd+': curDate.getDate(),
     'H+': curDate.getHours(),
     'm+': curDate.getMinutes(),
-    's+': curDate.getSeconds(),
+    's+': curDate.getSeconds()
   }
   for (const k in O) {
     const val = O[k].toString()
@@ -70,4 +70,15 @@ export const getMenuPath = (list: Menu.MenuItem[]): string[] => {
   return list.reduce((result: string[], item: Menu.MenuItem) => {
     return result.concat(Array.isArray(item.children) && !item.buttons ? getMenuPath(item.children) : item.path + '')
   }, [])
+}
+
+// 递归获取路由对象
+export const searchRoute: any = (path: string, routes: any = []) => {
+  for (const item of routes) {
+    if (item.path === path) return item
+    if (item.children) {
+      return searchRoute(path, item.children)
+    }
+  }
+  return ''
 }

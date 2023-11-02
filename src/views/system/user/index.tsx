@@ -18,19 +18,19 @@ export default function UserList() {
   }>()
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 10
   })
   useEffect(() => {
     getUserList({
       pageNum: pagination.current,
-      pageSize: pagination.pageSize,
+      pageSize: pagination.pageSize
     })
   }, [pagination.current, pagination.pageSize])
 
   // 搜索
   const handleSearch = () => {
     getUserList({
-      pageNum: 1,
+      pageNum: 1
     })
   }
   // 创建用户
@@ -48,7 +48,7 @@ export default function UserList() {
       content: <span>确认删除该用户吗？</span>,
       onOk: () => {
         handleUserDelSubmit([userId])
-      },
+      }
     })
   }
   // 批量删除确认
@@ -62,19 +62,19 @@ export default function UserList() {
       content: <span>确认删除该批用户吗？</span>,
       onOk: () => {
         handleUserDelSubmit(userIds)
-      },
+      }
     })
   }
   // 公共删除用户接口
   const handleUserDelSubmit = async (ids: number[]) => {
     try {
       await api.delUser({
-        userIds: ids,
+        userIds: ids
       })
       message.success('删除成功')
       setUserIds([])
       getUserList({
-        pageNum: 1,
+        pageNum: 1
       })
     } catch (error) {}
   }
@@ -88,13 +88,13 @@ export default function UserList() {
     const data = await api.getUserList({
       ...values,
       pageNum: params.pageNum,
-      pageSize: params.pageSize || pagination.pageSize,
+      pageSize: params.pageSize || pagination.pageSize
     })
     setData(data.list)
     setTotal(data.page.total)
     setPagination({
       current: data.page.pageNum,
-      pageSize: data.page.pageSize,
+      pageSize: data.page.pageSize
     })
   }
 
@@ -102,17 +102,17 @@ export default function UserList() {
     {
       title: '用户ID',
       dataIndex: 'userId',
-      key: 'userId',
+      key: 'userId'
     },
     {
       title: '用户名称',
       dataIndex: 'userName',
-      key: 'userName',
+      key: 'userName'
     },
     {
       title: '用户邮箱',
       dataIndex: 'userEmail',
-      key: 'userEmail',
+      key: 'userEmail'
     },
     {
       title: '用户角色',
@@ -123,9 +123,9 @@ export default function UserList() {
           0: '超级管理员',
           1: '管理员',
           2: '体验管理员',
-          3: '普通用户',
+          3: '普通用户'
         }[role]
-      },
+      }
     },
     {
       title: '用户状态',
@@ -135,9 +135,9 @@ export default function UserList() {
         return {
           1: '在职',
           2: '离职',
-          3: '试用期',
+          3: '试用期'
         }[state]
-      },
+      }
     },
     {
       title: '注册时间',
@@ -145,7 +145,7 @@ export default function UserList() {
       key: 'createTime',
       render(createTime: string) {
         return formatDate(createTime)
-      },
+      }
     },
     {
       title: '操作',
@@ -161,8 +161,8 @@ export default function UserList() {
             </Button>
           </Space>
         )
-      },
-    },
+      }
+    }
   ]
 
   return (
@@ -213,7 +213,7 @@ export default function UserList() {
             selectedRowKeys: userIds,
             onChange: (selectedRowKeys: React.Key[]) => {
               setUserIds(selectedRowKeys as number[])
-            },
+            }
           }}
           dataSource={data}
           columns={columns}
@@ -228,9 +228,9 @@ export default function UserList() {
             onChange: (page, pageSize) => {
               setPagination({
                 current: page,
-                pageSize: pageSize,
+                pageSize: pageSize
               })
-            },
+            }
           }}
         />
       </div>
@@ -238,7 +238,7 @@ export default function UserList() {
         mRef={userRef}
         update={() => {
           getUserList({
-            pageNum: 1,
+            pageNum: 1
           })
         }}
       />

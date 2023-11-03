@@ -10,15 +10,16 @@ import Dept from '@/views/system/dept'
 import Menu from '@/views/system/menu'
 import Role from '@/views/system/role'
 import AuthLoader from './AuthLoader'
+import OrderList from '@/views/system/order/OrderList'
 
 export const router = [
   {
     path: '/',
-    element: <Navigate to='/welcome' />,
+    element: <Navigate to='/welcome' />
   },
   {
     path: '/login',
-    element: <Login />,
+    element: <Login />
   },
   {
     id: 'layout',
@@ -27,42 +28,46 @@ export const router = [
     children: [
       {
         path: '/welcome',
-        element: <Welcome />,
+        element: <Welcome />
       },
       {
         path: '/dashboard',
-        element: <DashBoard />,
+        element: <DashBoard />
       },
       {
         path: '/userList',
-        element: <User />,
+        element: <User />
       },
       {
         path: '/deptList',
-        element: <Dept />,
+        element: <Dept />
       },
       {
         path: '/menuList',
-        element: <Menu />,
+        element: <Menu />
       },
       {
         path: '/roleList',
-        element: <Role />,
+        element: <Role />
       },
-    ],
+      {
+        path: '/orderList',
+        element: <OrderList />
+      }
+    ]
   },
   {
     path: '*',
-    element: <Navigate to='/404' />,
+    element: <Navigate to='/404' />
   },
   {
     path: '/404',
-    element: <NotFound />,
+    element: <NotFound />
   },
   {
     path: '/403',
-    element: <Error403 />,
-  },
+    element: <Error403 />
+  }
 ]
 
 // export default function Router() {

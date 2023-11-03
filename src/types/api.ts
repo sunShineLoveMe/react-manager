@@ -1,4 +1,5 @@
 import DashBoard from '@/views/dashboard'
+import exp from 'constants'
 
 export interface Result<T = any> {
   code: number
@@ -186,5 +187,52 @@ export namespace Role {
       checkedKeys: string[]
       halfCheckedKeys: string[]
     }
+  }
+}
+
+export namespace Order {
+  export enum IState {
+    doing = 1,
+    done = 2,
+    timeout = 3,
+    cance = 4
+  }
+
+  export interface CreateParams {
+    cityName: string
+    userName: string
+    mobile: number
+    startAddress: string // 订单开始地址
+    endAddress: string // 订单结束地址
+    orderAmount: number // 订单金额
+    userPayAmount: number // 支付金额
+    dirverAmount: number // 支付金额
+    // 1 微信  2 支付宝
+    payType: number // 支付方式
+    dirverName: string // 司机名称
+    vehicleName: string // 订单车型
+    // 1 进行中 2 已完成 3 超时 4 取消
+    state: IState // 订单状态
+    useTime: string // 用车时间
+    endTime: string // 订单结束时间
+  }
+
+  export interface OrderItem extends CreateParams {
+    _id: string
+    orderId: string
+    route: Array<{ lng: string; lat: string }> // 行使轨迹
+    remark: string // 备注
+  }
+
+  export interface SearchParams {
+    orderId?: string
+    userName?: string
+    state?: IState
+  }
+
+  export interface Params extends PageParams {
+    orderId?: string
+    userName?: string
+    state?: IState
   }
 }

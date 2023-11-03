@@ -4,9 +4,13 @@ import { useAntdTable } from 'ahooks'
 import orderApi from '@/api/orderApi'
 import { Order, Role } from '@/types/api'
 import { ColumnsType } from 'antd/es/table'
+import CreateOrder from './components/OrderCreate'
 
 export default function OrderList() {
   const [form] = Form.useForm()
+  const orderRef = useRef<{
+    open: () => void
+  }>()
 
   const getTableData = ({ current, pageSize }: { current: number; pageSize: number }, formData: Order.SearchParams) => {
     return orderApi
@@ -85,7 +89,10 @@ export default function OrderList() {
       }
     }
   ]
-
+  // 创建订单
+  const handleCreate = () => {
+    orderRef.current?.open()
+  }
   return (
     <div className='OrderList'>
       <Form className='search-form' form={form} layout='inline'>
@@ -114,11 +121,15 @@ export default function OrderList() {
         <div className='header-wrapper'>
           <div className='title'>用户列表</div>
           <div className='action'>
-            <Button type='primary'>新增</Button>
+            <Button type='primary' onClick={handleCreate}>
+              新增
+            </Button>
           </div>
         </div>
         <Table bordered rowKey='userId' columns={columns} {...tableProps} />
       </div>
+      {/* 创建订单组件 */}
+      <CreateOrder mRef={orderRef} update={search.submit} />
     </div>
   )
 }

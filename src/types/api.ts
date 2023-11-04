@@ -221,6 +221,7 @@ export namespace Order {
     _id: string
     orderId: string
     route: Array<{ lng: string; lat: string }> // 行使轨迹
+    createTime: string // 订单创建时间
     remark: string // 备注
   }
 

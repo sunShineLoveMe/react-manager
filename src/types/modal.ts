@@ -11,3 +11,7 @@ export interface IModalProp<T = User.UserItem> {
   >
   update: () => void
 }
+
+export interface IDetailProp {
+  mRef: MutableRefObject<{ open: (orderId: string) => void } | undefined>
+}

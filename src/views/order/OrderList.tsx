@@ -5,6 +5,7 @@ import orderApi from '@/api/orderApi'
 import { Order, Role } from '@/types/api'
 import { ColumnsType } from 'antd/es/table'
 import CreateOrder from './components/OrderCreate'
+import OrderDetail from './components/orderDetail'
 import { formatDate, formatMoney } from '@/utils'
 
 export default function OrderList() {
@@ -12,7 +13,8 @@ export default function OrderList() {
   const orderRef = useRef<{
     open: () => void
   }>()
-
+  // 订单详情
+  const detailRef = useRef<{ open: (orderId: string) => void }>()
   const getTableData = ({ current, pageSize }: { current: number; pageSize: number }, formData: Order.SearchParams) => {
     return orderApi
       .getOrderList({
@@ -101,7 +103,9 @@ export default function OrderList() {
       render(_, record) {
         return (
           <Space>
-            <Button type='text'>详情</Button>
+            <Button type='text' onClick={() => handleDetail(record.orderId)}>
+              详情
+            </Button>
             <Button type='text'>打点</Button>
             <Button type='text'>轨迹</Button>
             <Button type='text' danger>
@@ -112,6 +116,10 @@ export default function OrderList() {
       }
     }
   ]
+  // 订单详情
+  const handleDetail = (orderId: string) => {
+    detailRef.current?.open(orderId)
+  }
   // 创建订单
   const handleCreate = () => {
     orderRef.current?.open()
@@ -149,10 +157,11 @@ export default function OrderList() {
             </Button>
           </div>
         </div>
-        <Table bordered rowKey='userId' columns={columns} {...tableProps} />
+        <Table bordered rowKey='_id' columns={columns} {...tableProps} />
       </div>
       {/* 创建订单组件 */}
       <CreateOrder mRef={orderRef} update={search.submit} />
+      <OrderDetail mRef={detailRef} />
     </div>
   )
 }

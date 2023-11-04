@@ -1,10 +1,29 @@
-import { useImperativeHandle, useState } from 'react'
+import { useEffect, useImperativeHandle, useState } from 'react'
 import { Modal, Form, Row, Col, Select, Input, DatePicker } from 'antd'
 import { IModalProp } from '@/types/modal'
+import { Order } from '@/types/api'
+import api from '@/api/orderApi'
+import { message } from '@/utils/AntdGlobal'
 
 export default function CreateOrder(props: IModalProp) {
-  const form: any = Form.useForm()
+  const [form] = Form.useForm()
+
+  const [cityList, setCityList] = useState<Order.DictItem[]>([])
+  const [vehicleList, setVehicleList] = useState<Order.DictItem[]>([])
+
+  useEffect(() => {
+    getInitData()
+  }, [])
+
   const [visible, setVisible] = useState(false)
+
+  const getInitData = async () => {
+    const cityList = await api.getCityList()
+    const vehicleList = await api.getVehicleList()
+    setCityList(cityList)
+    setVehicleList(vehicleList)
+  }
+
   useImperativeHandle(props.mRef, () => {
     return {
       open
@@ -15,7 +34,15 @@ export default function CreateOrder(props: IModalProp) {
     setVisible(true)
   }
 
-  const handleOk = () => {}
+  const handleOk = async () => {
+    const valid = await form.validateFields()
+    if (valid) {
+      await api.createOrder(form.getFieldsValue())
+      message.success('创建成功')
+      handleCancel()
+      props.update()
+    }
+  }
 
   const handleCancel = () => {
     setVisible(false)
@@ -36,14 +63,22 @@ export default function CreateOrder(props: IModalProp) {
           <Col span={12}>
             <Form.Item name='cityName' label='城市名称' rules={[{ required: true, message: '请选择城市名称' }]}>
               <Select placeholder='请选择城市名称'>
-                <Select.Option value={1}>北京</Select.Option>
+                {cityList.map(item => (
+                  <Select.Option key={item.id} value={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item name='vehicleName' label='车型' rules={[{ required: true, message: '请选择车型' }]}>
               <Select placeholder='请选择车型名称'>
-                <Select.Option value={1}>面包车</Select.Option>
+                {vehicleList.map(item => (
+                  <Select.Option key={item.id} value={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>

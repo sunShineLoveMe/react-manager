@@ -2,12 +2,13 @@ import { Button, Form, Input, Table, Space, Modal, Select } from 'antd'
 import { useState, useEffect, useRef } from 'react'
 import { useAntdTable } from 'ahooks'
 import orderApi from '@/api/orderApi'
-import { Order, Role } from '@/types/api'
+import { Order } from '@/types/api'
 import { ColumnsType } from 'antd/es/table'
 import CreateOrder from './components/OrderCreate'
 import OrderDetail from './components/orderDetail'
 import OrderMarker from './components/OrderMarker'
 import { formatDate, formatMoney } from '@/utils'
+import OrderRoute from './components/OrderRoute'
 
 export default function OrderList() {
   const [form] = Form.useForm()
@@ -18,6 +19,8 @@ export default function OrderList() {
   const detailRef = useRef<{ open: (orderId: string) => void }>()
   //地图打点
   const markerRef = useRef<{ open: (orderId: string) => void }>()
+  // 地图轨迹
+  const routeRef = useRef<{ open: (orderId: string) => void }>()
   const getTableData = ({ current, pageSize }: { current: number; pageSize: number }, formData: Order.SearchParams) => {
     return orderApi
       .getOrderList({
@@ -112,7 +115,9 @@ export default function OrderList() {
             <Button type='text' onClick={() => handleMarker(record.orderId)}>
               打点
             </Button>
-            <Button type='text'>轨迹</Button>
+            <Button type='text' onClick={() => handleRoute(record.orderId)}>
+              轨迹
+            </Button>
             <Button type='text' danger>
               删除
             </Button>
@@ -133,6 +138,10 @@ export default function OrderList() {
   // 地图打点
   const handleMarker = (orderId: string) => {
     markerRef.current?.open(orderId)
+  }
+  // 地图轨迹
+  const handleRoute = (orderId: string) => {
+    routeRef.current?.open(orderId)
   }
   return (
     <div className='OrderList'>
@@ -173,6 +182,7 @@ export default function OrderList() {
       <CreateOrder mRef={orderRef} update={search.submit} />
       <OrderDetail mRef={detailRef} />
       <OrderMarker mRef={markerRef} />
+      <OrderRoute mRef={routeRef} />
     </div>
   )
 }

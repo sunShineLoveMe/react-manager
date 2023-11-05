@@ -31,5 +31,15 @@ export default {
   // 更新订单信息
   updateOrderInfo(parmas: Order.OrderRoute) {
     return request.post('/order/edit', parmas)
+  },
+
+  // 删除订单
+  delOrder(orderId: string) {
+    return request.post('/order/delete', { _id: orderId })
+  },
+
+  // 导出文件
+  exportData(params: Order.SearchParams) {
+    return request.downloadFile('/order/orderExport', params, '订单列表.xlsx')
   }
 }

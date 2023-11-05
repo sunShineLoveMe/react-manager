@@ -1,4 +1,4 @@
-import { Button, Form, Input, Table, Space, Modal, Select } from 'antd'
+import { Button, Form, Input, Table, Space, Modal, Select, message } from 'antd'
 import { useState, useEffect, useRef } from 'react'
 import { useAntdTable } from 'ahooks'
 import orderApi from '@/api/orderApi'
@@ -118,7 +118,7 @@ export default function OrderList() {
             <Button type='text' onClick={() => handleRoute(record.orderId)}>
               轨迹
             </Button>
-            <Button type='text' danger>
+            <Button type='text' danger onClick={() => handleDel(record._id)}>
               删除
             </Button>
           </Space>
@@ -135,6 +135,11 @@ export default function OrderList() {
     orderRef.current?.open()
   }
 
+  // 导出订单
+  const handleExport = () => {
+    orderApi.exportData(form.getFieldsValue())
+  }
+
   // 地图打点
   const handleMarker = (orderId: string) => {
     markerRef.current?.open(orderId)
@@ -142,6 +147,19 @@ export default function OrderList() {
   // 地图轨迹
   const handleRoute = (orderId: string) => {
     routeRef.current?.open(orderId)
+  }
+
+  // 删除订单
+  const handleDel = (_id: string) => {
+    Modal.confirm({
+      title: '确认',
+      content: <span>确认删除订单吗?</span>,
+      onOk: async () => {
+        await orderApi.delOrder(_id)
+        message.success('删除成功!')
+        search.submit()
+      }
+    })
   }
   return (
     <div className='OrderList'>
@@ -162,17 +180,24 @@ export default function OrderList() {
         </Form.Item>
         <Form.Item>
           <Space>
-            <Button type='primary'>搜索</Button>
-            <Button type='default'>重置</Button>
+            <Button type='primary' onClick={search.submit}>
+              搜索
+            </Button>
+            <Button type='default' onClick={search.reset}>
+              重置
+            </Button>
           </Space>
         </Form.Item>
       </Form>
       <div className='base-table'>
         <div className='header-wrapper'>
-          <div className='title'>用户列表</div>
+          <div className='title'>订单列表</div>
           <div className='action'>
             <Button type='primary' onClick={handleCreate}>
               新增
+            </Button>
+            <Button type='primary' onClick={handleExport}>
+              导出
             </Button>
           </div>
         </div>

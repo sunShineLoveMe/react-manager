@@ -8,6 +8,9 @@ import { start } from 'repl'
 
 export default function OrderRoute(props: IDetailProp) {
   const [visible, setVisible] = useState(false)
+  const [trackAni, setTrackAni] = useState<{
+    cancel: () => void
+  }>()
 
   useImperativeHandle(props.mRef, () => {
     return {
@@ -53,11 +56,13 @@ export default function OrderRoute(props: IDetailProp) {
         delay: 300
       })
       trackAni.start()
+      setTrackAni(trackAni)
     }
   }
 
   const handleCancel = () => {
     setVisible(false)
+    trackAni?.cancel()
   }
   return (
     <Modal title='地图打点' width={1100} open={visible} footer={false} onCancel={handleCancel}>

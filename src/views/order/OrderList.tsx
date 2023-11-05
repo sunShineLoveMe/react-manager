@@ -6,6 +6,7 @@ import { Order, Role } from '@/types/api'
 import { ColumnsType } from 'antd/es/table'
 import CreateOrder from './components/OrderCreate'
 import OrderDetail from './components/orderDetail'
+import OrderMarker from './components/OrderMarker'
 import { formatDate, formatMoney } from '@/utils'
 
 export default function OrderList() {
@@ -15,6 +16,8 @@ export default function OrderList() {
   }>()
   // 订单详情
   const detailRef = useRef<{ open: (orderId: string) => void }>()
+  //地图打点
+  const markerRef = useRef<{ open: (orderId: string) => void }>()
   const getTableData = ({ current, pageSize }: { current: number; pageSize: number }, formData: Order.SearchParams) => {
     return orderApi
       .getOrderList({
@@ -106,7 +109,9 @@ export default function OrderList() {
             <Button type='text' onClick={() => handleDetail(record.orderId)}>
               详情
             </Button>
-            <Button type='text'>打点</Button>
+            <Button type='text' onClick={() => handleMarker(record.orderId)}>
+              打点
+            </Button>
             <Button type='text'>轨迹</Button>
             <Button type='text' danger>
               删除
@@ -123,6 +128,11 @@ export default function OrderList() {
   // 创建订单
   const handleCreate = () => {
     orderRef.current?.open()
+  }
+
+  // 地图打点
+  const handleMarker = (orderId: string) => {
+    markerRef.current?.open(orderId)
   }
   return (
     <div className='OrderList'>
@@ -162,6 +172,7 @@ export default function OrderList() {
       {/* 创建订单组件 */}
       <CreateOrder mRef={orderRef} update={search.submit} />
       <OrderDetail mRef={detailRef} />
+      <OrderMarker mRef={markerRef} />
     </div>
   )
 }

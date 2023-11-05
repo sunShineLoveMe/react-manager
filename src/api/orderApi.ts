@@ -26,5 +26,10 @@ export default {
   // 获取订单详情
   getOrderDetail(orderId: string) {
     return request.get<Order.OrderItem>(`/order/detail/${orderId}`)
+  },
+
+  // 更新订单信息
+  updateOrderInfo(parmas: Order.OrderRoute) {
+    return request.post('/order/edit', parmas)
   }
 }

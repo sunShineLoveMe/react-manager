@@ -41,5 +41,10 @@ export default {
   // 导出文件
   exportData(params: Order.SearchParams) {
     return request.downloadFile('/order/orderExport', params, '订单列表.xlsx')
+  },
+
+  // 获取城市的聚合点数据
+  getCityData(cityId: number) {
+    return request.get(`/order/cluster/${cityId}`)
   }
 }

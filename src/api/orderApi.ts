@@ -45,6 +45,6 @@ export default {
 
   // 获取城市的聚合点数据
   getCityData(cityId: number) {
-    return request.get(`/order/cluster/${cityId}`)
+    return request.get<Array<{ lng: string; lat: string }>>(`/order/cluster/${cityId}`)
   }
 }

@@ -8,7 +8,7 @@ import { Result } from '@/types/api'
 // 创建实例
 const instance = axios.create({
   // baseURL: import.meta.env.VITE_BASE_API,
-  timeout: 8000,
+  timeout: 10000,
   timeoutErrorMessage: '请求超时，请稍后再试',
   withCredentials: true,
   headers: {

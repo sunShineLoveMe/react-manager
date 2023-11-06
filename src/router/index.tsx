@@ -12,6 +12,7 @@ import Role from '@/views/system/role'
 import AuthLoader from './AuthLoader'
 import OrderList from '@/views/order/OrderList'
 import OrderCluster from '@/views/order/components/OrderCluster'
+import DriverList from '@/views/order/DriverList'
 
 export const router = [
   {
@@ -58,6 +59,10 @@ export const router = [
       {
         path: '/cluster',
         element: <OrderCluster />
+      },
+      {
+        path: '/driverList',
+        element: <DriverList />
       }
     ]
   },

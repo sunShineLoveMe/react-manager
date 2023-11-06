@@ -3,6 +3,7 @@ import { Layout, theme, Watermark } from 'antd'
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import Menu from '@/components/Menu'
+import TabsFC from '@/components/TabsFc'
 import { Outlet, useRouteLoaderData, useLocation, Navigate } from 'react-router-dom'
 import styles from './index.module.less'
 import api from '@/api'
@@ -23,13 +24,12 @@ const App: React.FC = () => {
     const data = await api.getUserInfo()
     updateUserInfo(data)
   }
-
+  // 权限判断
+  const data = useRouteLoaderData('layout') as IAuthLoader
   const route = searchRoute(pathname, router)
   if (route && route.meta?.auth === false) {
     // 继续执行
   } else {
-    // 权限判断
-    const data = useRouteLoaderData('layout') as IAuthLoader
     const staticPath = ['/welcome', '/403', '/404']
     if (!data.menuPathList.includes(pathname) && !staticPath.includes(pathname)) {
       return <Navigate to='/403' />
@@ -44,6 +44,7 @@ const App: React.FC = () => {
         </Sider>
         <Layout>
           <NavHeader />
+          <TabsFC />
           <Content className={styles.content}>
             <div className={styles.wrapper}>
               <Outlet></Outlet>
